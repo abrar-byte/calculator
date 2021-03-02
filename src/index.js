@@ -7,6 +7,7 @@ import Calculator from './Calculator';
 // import Calc from './Calc'
 
 ReactDOM.render(
+
   <React.StrictMode>
     <Calculator />
   </React.StrictMode>,

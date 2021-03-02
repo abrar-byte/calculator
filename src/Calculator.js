@@ -2,8 +2,8 @@ import React, { Component } from 'react'
 
 export default class Calculator extends Component {
   state = {
-
-    hasil: ""
+    operator: "",
+    output: ""
   }
 
 
@@ -14,48 +14,41 @@ export default class Calculator extends Component {
     }
     else {
       this.setState({
-        hasil: this.state.hasil + tombol
+        output: this.state.output + tombol
       })
     }
   };
 
   kodehitung = () => {
-    var cekhasil = ""
-    if (this.state.hasil) {
-      cekhasil = this.state.hasil.replace("", "+")
-    }
 
-    else {
-      cekhasil = this.state.hasil
-    }
+    this.setState({
+      // eslint-disable-next-line             
+      output: (eval(this.state.output))
+    })
+  }
 
-    try {
-      this.setState({
-        // eslint-disable-next-line             
-        hasil: (eval(cekhasil) || "") + ""
-      })
-    }
-    catch (k) {
-      alert("ngantuk ta!!!!!!")
-      this.setState({ cekhasil })
-    }
-  };
+  select = (v) => {
+    this.setState({ operator: v })
+  }
+
 
   render() {
+
     return (
-      <div>
+
+      <div >
         <h1>Choose Operation</h1>
-        <button onClick={() => this.setState({ op: "+" })}>+</button>
-        <button onClick={() => this.setState({ op: "-" })}>-</button>
-        <button onClick={() => this.setState({ op: "x" })}>x</button>
-        <button onClick={() => this.setState({ op: ":" })}>:</button>
+        <button onClick={() => this.select("+")}>+</button>
+        <button onClick={() => this.select("-")}>-</button>
+        <button onClick={() => this.select(":")}>:</button>
+        <button onClick={() => this.select("x")}>x</button>
 
-        <Hasil hasil={this.state.hasil} />
+        <Output output={this.state.output} />
 
-        {this.state.op === "+" && <Tambah klik={this.klik} />}
-        {this.state.op === "-" && <Kurang klik={this.klik} />}
-        {this.state.op === "x" && <Kali klik={this.klik} />}
-        {this.state.op === ":" && <Bagi klik={this.klik} />}
+        {this.state.operator === "+" && <Tambah klik={this.klik}></Tambah>}
+        {this.state.operator === "-" && <Kurang klik={this.klik} />}
+        {this.state.operator === "x" && <Kali klik={this.klik} />}
+        {this.state.operator === ":" && <Bagi klik={this.klik} />}
 
       </div>
     )
@@ -67,7 +60,13 @@ class Tambah extends Component {
     return (
       <div>
         <h3>Tambahin</h3>
-        <button onClick={() => this.props.klik("+")}>+</button><br />
+        <button onClick={() => this.props.klik("+")}>+</button>
+
+
+
+
+
+        <br />
         {/* <button onClick={() => this.props.klik("1")}> 1</button>
         <button onClick={() => this.props.klik("2")}> 2</button>
         <button onClick={() => this.props.klik("3")}> 3</button><br />
@@ -78,7 +77,7 @@ class Tambah extends Component {
         <button onClick={() => this.props.klik("8")}> 8</button>
         <button onClick={() => this.props.klik("9")}> 9</button><br />
         <button onClick={() => this.props.klik("=")}>=</button> */}
-        <Angka klik={this.props.klik} />
+        <Angka {...this.props} />
 
 
       </div>
@@ -115,7 +114,7 @@ class Kali extends Component {
     return (
       <div>
         <h3>Kaliin</h3>
-        <button onClick={() => this.props.klik("x")}>x</button><br />
+        <button onClick={() => this.props.klik("*")}>x</button><br />
         {/* <button onClick={() => this.props.klik("1")}>1</button>
             <button onClick={() => this.props.klik("2")}>2</button>
             <button onClick={() => this.props.klik("3")}>3</button><br />
@@ -138,7 +137,7 @@ class Bagi extends Component {
     return (
       <div>
         <h3>Bagiin</h3>
-        <button onClick={() => this.props.klik(":")}>:</button><br />
+        <button onClick={() => this.props.klik("/")}>:</button><br />
         {/* <button onClick={() => this.props.klik("1")}>1</button>
         <button onClick={() => this.props.klik("2")}>2</button>
         <button onClick={() => this.props.klik("3")}>3</button><br />
@@ -171,6 +170,7 @@ class Angka extends Component {
         <button onClick={() => this.props.klik("7")}> 7</button>
         <button onClick={() => this.props.klik("8")}> 8</button>
         <button onClick={() => this.props.klik("9")}> 9</button><br />
+        <button onClick={() => this.props.klik("0")}>0</button>
         <button onClick={() => this.props.klik("=")}>=</button>
 
 
@@ -180,13 +180,13 @@ class Angka extends Component {
   }
 }
 
-class Hasil extends Component {
+class Output extends Component {
   render() {
     return (
       <div>
-        <h3>Hasilnya :</h3>
+        <h3>outputnya :</h3>
 
-        <h5>{this.props.hasil}</h5>
+        <h5>{this.props.output}</h5>
 
       </div>
     )
